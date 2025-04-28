@@ -6,10 +6,10 @@
     </x-slot>
 
     <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <!-- Popular Books -->
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6">
+            <div class="mb-6 bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                <div class="p-4 sm:p-6">
                     <h3 class="text-lg font-semibold mb-4">Most Popular Books</h3>
                     <div class="overflow-x-auto">
                         <table class="min-w-full divide-y divide-gray-200">
@@ -34,26 +34,27 @@
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Statistics Grid -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <!-- Monthly Stats -->
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                    <div class="p-6">
+                    <div class="p-4 sm:p-6">
                         <h3 class="text-lg font-semibold mb-4">Monthly Statistics</h3>
                         <div class="overflow-x-auto">
                             <table class="min-w-full divide-y divide-gray-200">
                                 <thead class="bg-gray-50">
                                     <tr>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">Period</th>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">Borrowings</th>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">Overdue</th>
+                                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">Period</th>
+                                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">Borrowings</th>
+                                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">Overdue</th>
                                     </tr>
                                 </thead>
                                 <tbody class="bg-white divide-y divide-gray-200">
                                     @foreach($monthlyStats as $stat)
                                         <tr>
-                                            <td class="px-6 py-4 whitespace-nowrap">{{ $stat->year }}/{{ $stat->month }}</td>
-                                            <td class="px-6 py-4 whitespace-nowrap">{{ $stat->total_borrowings }}</td>
-                                            <td class="px-6 py-4 whitespace-nowrap">{{ $stat->overdue_count }}</td>
+                                            <td class="px-4 py-3 whitespace-nowrap text-sm">{{ $stat->year }}/{{ $stat->month }}</td>
+                                            <td class="px-4 py-3 whitespace-nowrap text-sm">{{ $stat->total_borrowings }}</td>
+                                            <td class="px-4 py-3 whitespace-nowrap text-sm">{{ $stat->overdue_count }}</td>
                                         </tr>
                                     @endforeach
                                 </tbody>
@@ -64,21 +65,21 @@
 
                 <!-- Category Distribution -->
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                    <div class="p-6">
+                    <div class="p-4 sm:p-6">
                         <h3 class="text-lg font-semibold mb-4">Category Distribution</h3>
                         <div class="overflow-x-auto">
                             <table class="min-w-full divide-y divide-gray-200">
                                 <thead class="bg-gray-50">
                                     <tr>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">Category</th>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">Total Books</th>
+                                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">Category</th>
+                                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">Total Books</th>
                                     </tr>
                                 </thead>
                                 <tbody class="bg-white divide-y divide-gray-200">
                                     @foreach($categoryStats as $stat)
                                         <tr>
-                                            <td class="px-6 py-4 whitespace-nowrap">{{ $stat->category_name }}</td>
-                                            <td class="px-6 py-4 whitespace-nowrap">{{ $stat->total }}</td>
+                                            <td class="px-4 py-3 whitespace-nowrap text-sm">{{ $stat->category_name }}</td>
+                                            <td class="px-4 py-3 whitespace-nowrap text-sm">{{ $stat->total }}</td>
                                         </tr>
                                     @endforeach
                                 </tbody>

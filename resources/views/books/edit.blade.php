@@ -46,25 +46,31 @@
                             </option>
                         @endforeach
                     </select>
-                    @error('category')
-                        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                    @enderror
+                    <x-input-error :messages="$errors->get('category_id')" class="mt-2" />
                 </div>
 
-                <div class="mb-4">
-                    <label for="is_available" class="inline-flex items-center">
-                        <input type="checkbox" id="is_available" name="is_available" value="1"
-                            {{ $book->is_available ? 'checked' : '' }}
-                            class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
-                        <span class="ml-2">Available for borrowing</span>
-                    </label>
-                </div>
+                <!-- Remove the availability checkbox, it's handled automatically -->
 
-                <div class="flex items-center gap-4">
+                <div class="mt-6 flex items-center gap-4">
                     <x-primary-button>{{ __('Update Book') }}</x-primary-button>
-                    <a href="{{ route('books.index') }}" class="text-gray-600 hover:text-gray-900">{{ __('Cancel') }}</a>
                 </div>
             </form>
+
+            @if(!$book->isAvailable() && $book->currentBorrowing())
+                <div class="mt-4">
+                    <form action="{{ route('borrowings.return', $book->currentBorrowing()) }}" method="POST">
+                        @csrf
+                        @method('PUT')
+                        <button type="submit" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-md">
+                            Return Book
+                        </button>
+                    </form>
+                </div>
+            @endif
+
+            <div class="mt-4">
+                <a href="{{ route('books.index') }}" class="text-gray-600 hover:text-gray-900">{{ __('Cancel') }}</a>
+            </div>
         </div>
     </div>
 </x-app-layout>

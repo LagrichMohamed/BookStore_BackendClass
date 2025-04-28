@@ -9,6 +9,7 @@ use App\Http\Requests\StoreBorrowingRequest;
 use App\Http\Requests\ReturnBorrowingRequest;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class BorrowingController extends Controller
 {
@@ -52,14 +53,20 @@ class BorrowingController extends Controller
 
     public function update(ReturnBorrowingRequest $request, Borrowing $borrowing)
     {
-        $borrowing->update([
-            'returned_at' => now()
-        ]);
+        DB::beginTransaction();
+        try {
+            $borrowing->update([
+                'returned_at' => now()
+            ]);
 
-        $borrowing->book->update(['is_available' => true]);
+            $borrowing->book->update(['is_available' => true]);
 
-        return redirect()->route('borrowings.index')
-            ->with('success', 'Book returned successfully.');
+            DB::commit();
+            return back()->with('success', 'Book returned successfully.');
+        } catch (\Exception $e) {
+            DB::rollback();
+            return back()->with('error', 'Failed to return book. Please try again.');
+        }
     }
 
     /**

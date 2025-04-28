@@ -1,4 +1,8 @@
 import './bootstrap';
+import Alpine from 'alpinejs'
+
+window.Alpine = Alpine
+Alpine.start()
 
 // Show loading indicator during page transitions
 document.addEventListener('DOMContentLoaded', () => {

@@ -1,63 +1,57 @@
 @props(['book'])
 
 <div x-data="{ open: false }">
-    <!-- Trigger -->
-    <button @click="open = true" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded">
+    <button @click="open = true" class="bg-primary-600 hover:bg-primary-700 text-white px-4 py-2 rounded-md">
         Borrow Book
     </button>
 
-    <!-- Modal Backdrop -->
     <div x-show="open"
-         x-cloak
-         class="fixed inset-0 bg-black bg-opacity-50 z-40"
-         @click="open = false">
-    </div>
-
-    <!-- Modal Content -->
-    <div x-show="open"
-         x-cloak
-         @click.away="open = false"
-         @keydown.escape.window="open = false"
-         class="fixed inset-x-0 top-4 md:inset-0 md:flex md:items-center md:justify-center z-50">
-
-        <div class="bg-white rounded-lg overflow-hidden transform transition-all w-full md:max-w-md">
-            <div class="p-6">
-                <h3 class="text-lg font-medium text-gray-900 mb-4">Borrow "{{ $book->title }}"</h3>
-
-                <form method="POST" action="{{ route('borrowings.store', $book) }}">
-                    @csrf
-                    <div class="space-y-4">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700">Borrow Date</label>
-                            <input type="date" name="borrowed_at"
-                                value="{{ date('Y-m-d') }}"
-                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
-                        </div>
-
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700">Return Date</label>
-                            <input type="date" name="due_date"
-                                min="{{ date('Y-m-d', strtotime('+1 day')) }}"
-                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
-                        </div>
-
-                        <div class="flex justify-end space-x-3 mt-6">
-                            <button type="button" @click="open = false"
-                                class="bg-gray-300 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-400">
-                                Cancel
-                            </button>
-                            <button type="submit"
-                                class="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700">
-                                Confirm Borrowing
-                            </button>
-                        </div>
-                    </div>
-                </form>
+         class="fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center z-50"
+         x-transition
+         x-cloak>
+        <div class="bg-white rounded-lg p-6 max-w-md w-full">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-medium">Borrow "{{ $book->title }}"</h3>
+                <button @click="open = false" class="text-gray-400 hover:text-gray-500">
+                    <span class="sr-only">Close</span>
+                    <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
             </div>
+
+            <form method="POST" action="{{ route('borrowings.store', $book) }}">
+                @csrf
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Borrow Date</label>
+                        <input type="date" name="borrowed_at"
+                               value="{{ date('Y-m-d') }}"
+                               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Due Date</label>
+                        <input type="date" name="due_date"
+                               value="{{ date('Y-m-d', strtotime('+14 days')) }}"
+                               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500">
+                    </div>
+                </div>
+
+                <div class="mt-6 flex justify-end space-x-3">
+                    <button type="button" @click="open = false"
+                            class="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+                        Cancel
+                    </button>
+                    <button type="submit"
+                            class="bg-primary-600 border border-transparent rounded-md shadow-sm py-2 px-4 text-sm font-medium text-white hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+                        Confirm Borrow
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
 
 <style>
-    [x-cloak] { display: none !important; }
+[x-cloak] { display: none !important; }
 </style>

@@ -48,36 +48,40 @@
             @endif
 
             <!-- Books Grid -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                @forelse($books as $book)
-                    <div class="bg-white rounded-lg shadow overflow-hidden">
-                        <div class="p-6">
-                            <h3 class="text-xl font-semibold mb-2">{{ $book->title }}</h3>
-                            <p class="text-gray-600 mb-4">By {{ $book->author }}</p>
-                            <div class="mb-4">
-                                <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2">
-                                    {{ $book->category->name }}
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                @foreach($books as $book)
+                    <div class="bg-white rounded-lg shadow p-6 hover:shadow-md transition-shadow">
+                        <div class="flex flex-col h-full">
+                            <div class="flex-1">
+                                <h3 class="text-lg font-medium text-gray-900 mb-2">
+                                    <a href="{{ route('books.show', $book) }}" class="hover:text-primary-600">
+                                        {{ $book->title }}
+                                    </a>
+                                </h3>
+                                <p class="text-sm text-gray-600 mb-2">{{ $book->author }}</p>
+                                <p class="text-sm text-gray-500 mb-4">{{ $book->category->name }}</p>
+
+                                <span class="inline-block px-2 py-1 text-xs font-semibold rounded-full mb-4
+                                    {{ $book->isAvailable() ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
+                                    {{ $book->isAvailable() ? 'Available' : 'Borrowed' }}
                                 </span>
                             </div>
-                            <div class="flex justify-between items-center">
-                                <a href="{{ route('books.show', $book) }}" class="text-indigo-600 hover:text-indigo-900">
-                                    View Details
-                                </a>
+
+                            <div class="mt-4 flex justify-between items-center">
                                 @if($book->isAvailable())
-                                <x-borrow-modal :book="$book" />
-                                @else
-                                <span class="inline-block bg-red-100 text-red-800 px-3 py-1 rounded-full text-sm">
-                                    Not Available
-                                </span>
+                                    <x-borrow-modal :book="$book" />
+                                @endif
+
+                                @if(auth()->user()->isAdmin())
+                                    <div class="flex items-center space-x-2">
+                                        <a href="{{ route('books.edit', $book) }}"
+                                           class="text-primary-600 hover:text-primary-900">Edit</a>
+                                    </div>
                                 @endif
                             </div>
                         </div>
                     </div>
-                @empty
-                    <div class="col-span-full text-center py-12 text-gray-500">
-                        No books found.
-                    </div>
-                @endforelse
+                @endforeach
             </div>
 
             <!-- Pagination -->
